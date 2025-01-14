@@ -1,0 +1,7 @@
+boto3
+tweepy
+
+openai
+pyyaml
+pydantic
+beautifulsoup4
