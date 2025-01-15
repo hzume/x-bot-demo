@@ -43,7 +43,6 @@ class PostConfig(BaseModel):
 
 
 class Config(BaseModel):
-    secret_name: str
     follow: FollowConfig
     post: PostConfig
 
@@ -56,13 +55,14 @@ def load_config(path: Path) -> Config:
 
 def get_clients(config: Config):
     region = os.environ["REGION"]
+    secret_name = os.environ["SECRET_NAME"]
     session = boto3.session.Session()
     sm_client = session.client(
         service_name="secretsmanager", region_name=region
     )
 
     try:
-        get_secret_value_response = sm_client.get_secret_value(SecretId=config.secret_name)
+        get_secret_value_response = sm_client.get_secret_value(SecretId=secret_name)
     except ClientError as e:
         raise e
 

@@ -33,6 +33,7 @@ module "lambda" {
   app_name                     = var.app_name
   lambda_iam_role              = module.iam.lambda_iam_role
   region                       = var.region
+  secret_name                  = var.secret_name
   lambda_follow_repository_url = module.ecr.lambda_follow_repository_url
   lambda_post_repository_url   = module.ecr.lambda_post_repository_url
   image_digest_follow          = module.bash.image_digest_follow

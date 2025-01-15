@@ -1,5 +1,3 @@
-secret_name: "prod/demo-secrets"
-
 follow:
   post_search_query: "#猫がいる暮らし OR #ペルシャ猫 OR #メインクーン OR #猫好きさんと繋がりたい"
   max_follow_count: 5

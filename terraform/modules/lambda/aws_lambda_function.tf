@@ -10,6 +10,7 @@ resource "aws_lambda_function" "lambda_follow" {
   environment {
     variables = {
       REGION = var.region
+      SECRET_NAME = var.secret_name
     }
   }
 
@@ -30,6 +31,7 @@ resource "aws_lambda_function" "lambda_post" {
   environment {
     variables = {
       REGION = var.region
+      SECRET_NAME = var.secret_name
     }
   }
 

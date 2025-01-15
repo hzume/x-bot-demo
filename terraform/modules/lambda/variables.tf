@@ -10,6 +10,10 @@ variable "region" {
   type = string
 }
 
+variable "secret_name" {
+  type = string
+}
+
 variable "lambda_follow_repository_url" {
   type = string
 }

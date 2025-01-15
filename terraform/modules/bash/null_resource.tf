@@ -4,6 +4,10 @@ resource "null_resource" "build_push_image_follow" {
   }
 
   provisioner "local-exec" {
+    command = "docker logout ${local.account_id}.dkr.ecr.${var.region}.amazonaws.com"
+  }
+
+  provisioner "local-exec" {
     command = "aws ecr get-login-password --region ${var.region} | docker login --username AWS --password-stdin ${local.account_id}.dkr.ecr.${var.region}.amazonaws.com"
   }
 
