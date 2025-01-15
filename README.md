@@ -1,3 +1,12 @@
+# 新しくアカウントを作成する場合の手順
+
+1. Xアカウントを作成・ログイン
+2. 本リポジトリを`git clone`
+3. `uv sync`で仮想環境を作成（[uvのインストール方法](https://docs.astral.sh/uv/getting-started/installation/)）
+4. `uv run setup.py`で初期設定を行う
+5. 下記「設定ファイルについて」を参照し、自動フォロー・ポストの設定を行う
+6. 下記「デプロイ方法」を参照し、デプロイする
+
 # 概要
 
 ## ディレクトリ構成
@@ -6,7 +15,7 @@
 
 ```
 .
-├── authorization_helper.py # 認証URLを取得するためのスクリプト
+├── setup.py # 初期設定を行うスクリプト
 └── terraform/
     ├── aws_config.tfvars.json # インフラに関する設定ファイル 
     └── modules/
@@ -52,6 +61,7 @@ terraformでインフラをデプロイする。
 
 ## SecretsManagerの設定
 SecretsManagerはterraformでは管理していないので、AWSコンソールから手動で設定する。
+初期設定は`setup.py`で行う。
 
 - X_BearerToken
 - X_ConsumerKey
@@ -75,13 +85,13 @@ Xアカウント毎に取得・設定する必要がある。取得方法は下�
 AWSリソースに関する設定ファイル。
 - app_name: アプリケーション名
 - region: リージョン
+- secret_name: SecretsManagerのシークレット名
 - schedule_expression_follow: 自動フォローLambda関数の定期実行スケジュール
 - schedule_expression_post: 自動投稿Lambda関数の定期実行スケジュール
 
 ## config.yaml
 
 Lambda関数の設定ファイル。
-- secret_name: SecretsManagerのシークレット名
 - follow: 自動フォローに関する設定
     - post_search_query: ツイートの検索クエリ（参照：https://developer.x.com/en/docs/x-api/tweets/search/integrate/build-a-query）
     - max_follow_count: 一度にフォローするユーザーの最大数
@@ -94,20 +104,6 @@ Lambda関数の設定ファイル。
     - post_search_query: 記事の検索クエリ 追加すると、source_account_nameのツイートを検索する際にこのクエリも検索する
     - post_instruction_prompt: 投稿するツイートの指示プロンプト 文字数やフォーマットを指定
     - post_style_examples: 投稿するツイートのツイート例 文体などを参考にさせるために指定
-
-# 新しくアカウントを作成する場合の手順
-
-1. 新しいアカウントを作成
-2. 該当アカウントのAPIキーを取得
-    - 参考：https://docs.tweepy.org/en/stable/authentication.html#legged-oauth
-    - `authorization_helper.py`を実行
-    - 標準出力に認証URLが出力されるので、そのURLにアクセスし、該当アカウントとアプリの連携を許可する
-    - 許可すると、Xのホームにリダイレクトされる。リダイレクト先のURLに`oauth_verifier`が含まれていることを確認する
-    - `authorization_helper.py`がVerifierを入力するように求めるので、入力する
-    - 標準出力に`access_token`と`access_token_secret`が出力される
-    - AWSコンソールからSecretsManagerにアクセスし`X_AccessToken`と`X_AccessTokenSecret`を変更または追加する。
-3. 上記「設定ファイルについて」を参照し、自動フォロー・ポストの設定を行う
-
 
 # For Developer
 ## Python仮想環境の設定
